@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EditorComponent } from '@tinymce/tinymce-angular';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { finalize } from 'rxjs/operators';
+import { finalize, last } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
     placeholder: 'Once upon a time...',
     content_css: 'writer',
     content_style: 'img{max-width:100%;height:auto;}',
-
+    images_reuse_filename: true,
+    paste_data_images: false,
     height: 'calc(100vh - 88px)',
     images_upload_handler: (blobInfo) => {
       const file = blobInfo.blob();
@@ -37,7 +38,12 @@ export class AppComponent implements OnInit {
           .snapshotChanges()
           .pipe(
             finalize(() =>
-              ref.getDownloadURL().subscribe((url) => resolve(url))
+              ref
+                .getDownloadURL()
+                .pipe(last())
+                .subscribe((url) => {
+                  resolve(url);
+                })
             )
           )
           .subscribe((_) => {
