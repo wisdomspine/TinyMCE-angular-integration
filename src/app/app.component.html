@@ -1,8 +1,6 @@
 <h1>TinyMCE 6 Angular Demo</h1>
 <editor
   apiKey="1x9n7av7vzcvbvqy0hw2zdhgfb4go59yh1ukn7669ezgh1pd"
-  [init]="{ plugins: 'lists link image table code help wordcount' }"
-  initialValue="Once upon a time..."
+  [init]="config"
   [(ngModel)]="source"
-  [init]="{tinymceInit: 'yes'}"
 ></editor>
