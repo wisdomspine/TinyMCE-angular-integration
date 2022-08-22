@@ -9,9 +9,14 @@ import { finalize, last } from 'rxjs/operators';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  /**
+   * Keeps track of the user input
+   */
   source: string = '';
-  title = 'images-tinymce';
-  tinymceinit: any = {};
+
+  /**
+   * Configuration for our tiny mce editor
+   */
   config: EditorComponent['init'] = {
     plugins: 'lists link image table code help wordcount',
     toolbar:
@@ -27,6 +32,12 @@ export class AppComponent implements OnInit {
     images_reuse_filename: true,
     paste_data_images: false,
     height: 'calc(100vh - 88px)',
+
+    /**
+     * uploads image to firebase storage
+     * @param blobInfo
+     * @returns image download url from firebase storage
+     */
     images_upload_handler: (blobInfo) => {
       const file = blobInfo.blob();
       const filePath = `${Date.now()}-${blobInfo.filename()}`;
@@ -56,7 +67,5 @@ export class AppComponent implements OnInit {
 
   constructor(private storage: AngularFireStorage) {}
 
-  ngOnInit() {
-    this.tinymceinit;
-  }
+  ngOnInit() {}
 }
